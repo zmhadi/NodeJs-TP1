@@ -5,13 +5,13 @@ const port = 3000
 const userRepository = require('./back/repository')
 const log = require('./back/log')
 const route = require('./back/route')
-const path = require('path')
+const cors = require('cors')
 
 // Middleware //////////////////////
 
 app.use(express.json())
 
-app.use(express.static('./front'));
+app.use(cors())
 
 app.use(route.initializeRoutes())
 
@@ -35,10 +35,6 @@ app.use((err, req, res, next) => {
 }); 
 
 /////////////////////////////////////
-
-app.get('/',function(req,res){
-    res.sendFile(path.join(__dirname,'front/views/index.html'));
-});
 
 //Route pour récupérer tous les "user"
 

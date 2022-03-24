@@ -10,6 +10,10 @@ const getUserByFirstName = function(firstName) {
     return users.find((user) => firstName == user.firstName)
 }
 
+const getUserById = function(id) {
+    return users.find((user) => id == user.id)
+}
+
 const createUser = function(data) {
     //Encrypter le password de l'utilisateur
     data.password = md5(data.password)
@@ -42,6 +46,7 @@ const deleteUser = function(id) {
 module.exports = {
     getUsers,
     getUserByFirstName,
+    getUserById,
     createUser,
     editUser,
     deleteUser
