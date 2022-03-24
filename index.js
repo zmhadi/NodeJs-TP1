@@ -41,7 +41,11 @@ app.use((err, req, res, next) => {
 //Route pour récupérer un "user" via son firstName
 app.get('/users/:firstName', (req, res) => {
     try {   
-        res.send(userRepository.getUserByFirstName(req.params.firstName))
+        let userByFirstName = userRepository.getUserByFirstName(req.params.firstName)
+        if (userByFirstName == undefined) {
+            res.status(404).end()
+        }
+        res.status(200).send(userByFirstName)
     }
     catch (e) {
         console.log(e)
@@ -55,7 +59,7 @@ app.post('/users/edit' , (req, res) => {
     try {
         //console.log(req.body)
         userRepository.editUser(req.body)
-        res.send('Utilisateur modifié !')
+        res.status(204).send('Utilisateur modifié !')
     }
     catch {
         res.send('Erreur requete GET : userRepository.editUser(req.body)')
@@ -67,7 +71,7 @@ app.post('/users/delete/:id' , (req, res) => {
     try {
         //console.log(req.params)
         userRepository.deleteUser(req.params.id)
-        res.send('Utilisateur supprimé !')
+        res.status(202).send('Utilisateur supprimé !')
     }
     catch {
         res.send('Erreur requete GET : userRepository.deleteUser(req.params.id)')
@@ -77,7 +81,7 @@ app.post('/users/delete/:id' , (req, res) => {
 //Voir les logs
 app.get('/logs', (req, res) => {
     try {
-        res.send(log.getLogs())
+        res.status(200).send(log.getLogs())
     }
     catch {
         res.send('Erreur requete GET : log.getLogs()')

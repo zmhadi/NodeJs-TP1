@@ -7,7 +7,11 @@ const getUsers = function() {
 }
 
 const getUserByFirstName = function(firstName) {
-    return users.find((user) => firstName == user.firstName)
+    let userByFirstName = users.find((user) => firstName == user.firstName)
+    if (userByFirstName == undefined) {
+        return undefined
+    }
+    return userByFirstName
 }
 
 const getUserById = function(id) {
@@ -16,6 +20,9 @@ const getUserById = function(id) {
 
 const createUser = function(data) {
     //Encrypter le password de l'utilisateur
+    if(getUserById(data.id) != undefined) {
+        return undefined
+    } 
     data.password = md5(data.password)
     users.push(data)
 }

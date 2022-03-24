@@ -14,16 +14,22 @@ router.get('/users', (req, res) => {
 router.get('/users/id/:id', (req,res) => {
     try {
         const foundUser = userRepository.getUserById(req.params.id)
-         res.send(foundUser)
+        if(foundUser == undefined) {
+            res.status(404).end()
+        }
+        res.status(200).send(foundUser)
     }
     catch (e){
-        console.log(e)
+        res.send('Erreur requete GET : userRepository.getUserById(req.params.id)')
     }
 })
 
 router.post('/users', (req,res) => {
     try {
-        userRepository.createUser(req.body)
+        const createUser = userRepository.createUser(req.body)
+        if (createUser == undefined) {
+            res.status(409).end()
+        }
         res.status(201).end()
     }
     catch {
