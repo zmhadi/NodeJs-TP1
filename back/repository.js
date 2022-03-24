@@ -20,11 +20,14 @@ const getUserById = function(id) {
 
 const createUser = function(data) {
     //Encrypter le password de l'utilisateur
+    //When we want to assigned an id on req.body
     if(getUserById(data.id) != undefined) {
         return undefined
-    } 
+    }
+    data.id = Date.now()
     data.password = md5(data.password)
     users.push(data)
+    return true
 }
 
 const editUser = function(data) {

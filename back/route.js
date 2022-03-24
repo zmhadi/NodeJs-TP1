@@ -26,7 +26,7 @@ router.get('/users/id/:id', (req,res) => {
 
 router.post('/users', (req,res) => {
     try {
-        const createUser = userRepository.createUser(req.body)
+        let createUser = userRepository.createUser(req.body)
         if (createUser == undefined) {
             res.status(409).end()
         }
