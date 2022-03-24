@@ -2,12 +2,18 @@
 const express = require('express')
 const app = express()
 const port = 3000
-const userRepository = require('./repository')
-const log = require('./log')
+const userRepository = require('./back/repository')
+const log = require('./back/log')
+const route = require('./back/route')
+const path = require('path')
 
 // Middleware //////////////////////
 
 app.use(express.json())
+
+app.use(express.static('./front'));
+
+app.use(route.initializeRoutes())
 
 app.use((req, res, next) => {
     const start = new Date()
@@ -30,36 +36,24 @@ app.use((err, req, res, next) => {
 
 /////////////////////////////////////
 
+app.get('/',function(req,res){
+    res.sendFile(path.join(__dirname,'front/views/index.html'));
+});
+
 //Route pour récupérer tous les "user"
-app.get('/users', (req, res) => {
-    try {
-        res.send(userRepository.getUsers())
-    }
-    catch {
-        res.send('Erreur requete GET : userRepository.getUsers()')
-    }
-})
+
 //Route pour récupérer un "user" via son firstName
 app.get('/users/:firstName', (req, res) => {
     try {   
-        //console.log(req.params)
         res.send(userRepository.getUserByFirstName(req.params.firstName))
     }
-    catch {
+    catch (e) {
+        console.log(e)
         res.send("Erreur requete GET : userRepository.getUserByFirstName(req.params.firstName)")
     }
 })
 //Route pour créer un "user"
-app.post('/users/create' , (req, res) => {
-    try {
-        //console.log(req.body)
-        userRepository.createUser(req.body)
-        res.send('Utilisateur a été crée !')
-    }
-    catch {
-        res.send('Erreur requete GET : userRepository.createUser(req.body)')
-    }
-})
+
 //Route pour modifier un "user"
 app.post('/users/edit' , (req, res) => {
     try {
