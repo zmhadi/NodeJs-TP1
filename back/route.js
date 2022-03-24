@@ -1,6 +1,6 @@
 const express = require('express')
-const router = express.Router()
 const userRepository = require('./repository')
+const router = express.Router()
 
 //Route pour récupérer tous les "user"
 router.get('/users', (req, res) => {
@@ -11,6 +11,21 @@ router.get('/users', (req, res) => {
         res.send('Erreur requete GET : userRepository.getUsers()')
     }
 })
+
+//Route pour récupérer un "user" via son firstName
+router.get('/users/:firstName', (req, res) => {
+    try {   
+        let userByFirstName = userRepository.getUserByFirstName(req.params.firstName)
+        if (userByFirstName == undefined) {
+            res.status(404).end()
+        }
+        res.status(200).send(userByFirstName)
+    }
+    catch {
+        res.send("Erreur requete GET : userRepository.getUserByFirstName(req.params.firstName)")
+    }
+})
+
 //Route pour récupérer un "user" via son id
 router.get('/users/id/:id', (req,res) => {
     try {
@@ -24,6 +39,7 @@ router.get('/users/id/:id', (req,res) => {
         res.send('Erreur requete GET : userRepository.getUserById(req.params.id)')
     }
 })
+
 //Route pour créer un "user"
 router.post('/users', (req,res) => {
     try {
@@ -37,20 +53,7 @@ router.post('/users', (req,res) => {
         res.send('Erreur requete GET : userRepository.createUser(req.body)')
     }
 })
-//Route pour récupérer un "user" via son firstName
-router.get('/users/:firstName', (req, res) => {
-    try {   
-        let userByFirstName = userRepository.getUserByFirstName(req.params.firstName)
-        if (userByFirstName == undefined) {
-            res.status(404).end()
-        }
-        res.status(200).send(userByFirstName)
-    }
-    catch (e) {
-        console.log(e)
-        res.send("Erreur requete GET : userRepository.getUserByFirstName(req.params.firstName)")
-    }
-})
+
 //Route pour modifier un "user"
 router.post('/users/edit' , (req, res) => {
     try {
@@ -63,6 +66,7 @@ router.post('/users/edit' , (req, res) => {
     }
 
 })
+
 //Route pour supprimer un "user"
 router.post('/users/delete/:id' , (req, res) => {
     try {
@@ -75,6 +79,7 @@ router.post('/users/delete/:id' , (req, res) => {
     }
 
 })
+
 //Voir les logs
 router.get('/logs', (req, res) => {
     try {
@@ -84,6 +89,7 @@ router.get('/logs', (req, res) => {
         res.send('Erreur requete GET : log.getLogs()')
     }
 })
+
 exports.initializeRoutes = function() {
     return router
 }
