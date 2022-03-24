@@ -15,4 +15,4 @@ const getLogs = function() {
 module.exports = {
     addLog,
     getLogs
-}
+} 
