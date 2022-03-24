@@ -1,6 +1,8 @@
 //Fichier dédié à l'intéraction avec la DB
-const users = require('./db')
 const md5 = require('blueimp-md5')
+const { v4: uuidv4 } = require('uuid')
+//////////////////////////////////////////
+const users = require('./db')
 
 const getUsers = function() {
     return users
@@ -21,10 +23,10 @@ const getUserById = function(id) {
 const createUser = function(data) {
     //Encrypter le password de l'utilisateur
     //When we want to assigned an id on req.body
-    if(getUserById(data.id) != undefined) {
+    /*if(getUserById(data.id) != undefined) {
         return undefined
-    }
-    data.id = Date.now()
+    }*/
+    data.id = uuidv4()
     data.password = md5(data.password)
     users.push(data)
     return true
